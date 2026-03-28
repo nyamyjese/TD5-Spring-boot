@@ -13,4 +13,8 @@ public class Ingredient {
     private CategoryEnum category;
     private Double price;
     private List<StockMovement> stockMovementList;
+
+    public Ingredient() {
+
+    }
 }
