@@ -2,6 +2,8 @@ package com.example.td5springboot.service;
 
 import com.example.td5springboot.entity.Dish;
 import com.example.td5springboot.entity.Ingredient;
+import com.example.td5springboot.exception.BadRequestException;
+import com.example.td5springboot.exception.NotFoundException;
 import com.example.td5springboot.repository.DishRepository;
 import com.example.td5springboot.repository.IngredientRepository;
 import org.springframework.stereotype.Service;
@@ -26,12 +28,12 @@ public class DishService {
 
     public Dish getDishById(Integer id) {
         return dishRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Dish.id=" + id + " is not found"));
+                .orElseThrow(() -> new NotFoundException("Dish.id=" + id + " is not found"));
     }
 
     public Dish updateDishIngredients(Integer dishId , List<Ingredient> ingredientsFromRequest){
         if(ingredientsFromRequest == null){
-            throw new RuntimeException("Request body is null");
+            throw new BadRequestException("Request body is mandatory");
         }
 
         getDishById(dishId);
