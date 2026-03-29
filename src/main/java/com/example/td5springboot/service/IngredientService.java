@@ -3,6 +3,8 @@ package com.example.td5springboot.service;
 import com.example.td5springboot.entity.Ingredient;
 import com.example.td5springboot.entity.StockValue;
 import com.example.td5springboot.entity.Unit;
+import com.example.td5springboot.exception.BadRequestException;
+import com.example.td5springboot.exception.NotFoundException;
 import com.example.td5springboot.repository.IngredientRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +23,16 @@ public class IngredientService {
 
     public Ingredient getIngredientById(Integer id) {
         return ingredientRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Ingredient.id=" + id + " is not found"));
+                .orElseThrow(() -> new NotFoundException("Ingredient.id=" + id + " is not found"));
     }
 
     public StockValue getIngredientStock(Integer id , String at , String unit){
         if(at == null || at.isBlank()){
-            throw new RuntimeException("at is null or at is blank");
+            throw new BadRequestException("Mandatory query parameter `at` is not provided");
         }
 
         if(unit == null || unit.isBlank()){
-            throw new RuntimeException("unit is null or unit is blank");
+            throw new BadRequestException("Mandatory query parameter `unit` is not provided");
         }
 
         getIngredientById(id);
