@@ -2,7 +2,9 @@ package com.example.td5springboot.validator;
 
 import com.example.td5springboot.entity.Ingredient;
 import com.example.td5springboot.exception.BadRequestException;
+import org.springframework.stereotype.Component;
 
+@Component
 public class IngredientValidator {
     public void validate (Ingredient ingredient){
         if(ingredient.getName() == null || ingredient.getName().isBlank()){
