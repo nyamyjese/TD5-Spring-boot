@@ -1,5 +1,5 @@
 package com.example.td5springboot.entity;
 
 public enum CategoryEnum {
-    VEGETABLE , ANIMAL , MARINE , DAIRY , OTHER
+    VEGETABLE , ANIMAL ,  DAIRY , OTHER
 }
