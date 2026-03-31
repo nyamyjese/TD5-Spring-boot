@@ -10,51 +10,38 @@ import java.util.List;
 
 @Component
 public class DishValidator {
-    public void validate (Dish dish) {
-        if(dish.getName() == null || dish.getName().isBlank()){
+    public void validate(Dish dish) {
+        if (dish.getName() == null || dish.getName().isBlank()) {
             throw new BadRequestException("NewDish.name cannot be null");
         }
-
-        if(dish.getDishType() == null){
-            throw new BadRequestException("NewDish.DishType cannot be null");
+        if (dish.getDishType() == null) {
+            throw new BadRequestException("NewDish.dishType cannot be null");
         }
-
-        if(dish.getPrice() == null){
-            throw new BadRequestException("NewDish.DishPrice cannot be null");
+        if (dish.getPrice() != null && dish.getPrice() < 0) {
+            throw new BadRequestException("NewDish.price cannot be negative");
         }
+    }
 
-        if(dish.getPrice() <= 0){
-            throw new BadRequestException("NewDish.DishPrice cannot be negative");
+    public void validateCreateRequest(CreateDishRequest request) {
+        if (request.getName() == null || request.getName().isBlank()) {
+            throw new BadRequestException("NewDish.name cannot be null");
+        }
+        if (request.getDishType() == null) {
+            throw new BadRequestException("NewDish.dishType cannot be null");
+        }
+        if (request.getPrice() != null && request.getPrice() < 0) {
+            throw new BadRequestException("NewDish.price cannot be negative");
         }
     }
 
     public void validateIngredientsList(List<Ingredient> ingredients) {
-        if(ingredients == null){
+        if (ingredients == null) {
             throw new BadRequestException("Request body is mandatory");
         }
-
-        for(Ingredient ingredient : ingredients){
-            if(ingredient.getId() == null){
+        for (Ingredient ingredient : ingredients) {
+            if (ingredient.getId() == null) {
                 throw new BadRequestException("NewDishIngredient.id cannot be null");
             }
-        }
-    }
-
-    public void validateCreateDishRequest(CreateDishRequest createDishRequest) {
-        if(createDishRequest.getName() == null || createDishRequest.getName().isBlank()){
-            throw new BadRequestException("NewDishRequest.name cannot be null");
-        }
-
-        if(createDishRequest.getDishType() == null){
-            throw new BadRequestException("NewDishRequest.dihType cannot be null");
-        }
-
-        if(createDishRequest.getPrice() == null){
-            throw new BadRequestException("NewDishRequest.price cannot be null");
-        }
-
-        if(createDishRequest.getPrice() <= 0){
-            throw new BadRequestException("NewDishRequest.price cannot be negative");
         }
     }
 }

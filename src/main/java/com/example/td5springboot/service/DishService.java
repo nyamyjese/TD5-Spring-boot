@@ -50,16 +50,16 @@ public class DishService {
         return dishRepository.updateIngredients(dishId, validIngredients);
     }
 
-    public List<Dish> createDishes (List<CreateDishRequest> createDishRequests) {
+    public List<Dish> createDishes(List<CreateDishRequest> requests) {
         List<Dish> created = new ArrayList<>();
+        for (CreateDishRequest request : requests) {
+            dishValidator.validateCreateRequest(request);
 
-        for(CreateDishRequest createDishRequest : createDishRequests) {
-            dishValidator.validateCreateDishRequest(createDishRequest);
-
-            if(dishRepository.existsByName(createDishRequest.getName())) {
-                throw new BadRequestException("Dish.name=" + createDishRequest.getName() + " already exists");
+            if (dishRepository.existsByName(request.getName())) {
+                throw new BadRequestException("Dish.name=" + request.getName() + " already exists");
             }
-            Dish saved = dishRepository.save(createDishRequest);
+
+            Dish saved = dishRepository.save(request);
             created.add(saved);
         }
         return created;
