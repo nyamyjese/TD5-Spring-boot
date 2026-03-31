@@ -57,6 +57,12 @@ public class DishRepository {
         return results.stream().findFirst();
     }
 
+    public boolean existsByName (String name) {
+        String sql = "SELECT COUNT(1) From dish where LOWER(name) = LOWER(?)";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, name);
+        return count >0;
+    }
+
     public List<DishIngredient> findIngredientsByDishId(Integer dishId) {
         String sql = """
                 SELECT ingredient.id, ingredient.name, ingredient.price, ingredient.category,
@@ -98,5 +104,22 @@ public class DishRepository {
 
         return findById(dishId)
                 .orElseThrow(() -> new RuntimeException("Dish.id=" + dishId + " is not found"));
+    }
+
+    public Dish save(CreateDishRequest createDishRequest) {
+        String sql = """
+                INSERT INTO dish (name, dish_type, selling_price) VALUES (?, ?::dish_type, ?)
+                """;
+        jdbcTemplate.update(sql,
+            createDishRequest.getName(),
+            createDishRequest.getDishType().name(),
+            createDishRequest.getPrice()
+        );
+
+        String sqlLastID = "SELECT MAX(id) FROM dish";
+        Integer generatedId = jdbcTemplate.queryForObject(sqlLastID, Integer.class);
+
+        return findById(generatedId)
+                .orElseThrow(() -> new RuntimeException("Dish.id=" + generatedId + " is not found"));
     }
 }
