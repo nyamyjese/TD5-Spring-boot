@@ -1,5 +1,6 @@
 package com.example.td5springboot.validator;
 
+import com.example.td5springboot.entity.CreateDishRequest;
 import com.example.td5springboot.entity.Dish;
 import com.example.td5springboot.entity.Ingredient;
 import com.example.td5springboot.exception.BadRequestException;
@@ -36,6 +37,24 @@ public class DishValidator {
             if(ingredient.getId() == null){
                 throw new BadRequestException("NewDishIngredient.id cannot be null");
             }
+        }
+    }
+
+    public void validateCreateDishRequest(CreateDishRequest createDishRequest) {
+        if(createDishRequest.getName() == null || createDishRequest.getName().isBlank()){
+            throw new BadRequestException("NewDishRequest.name cannot be null");
+        }
+
+        if(createDishRequest.getDishType() == null){
+            throw new BadRequestException("NewDishRequest.dihType cannot be null");
+        }
+
+        if(createDishRequest.getPrice() == null){
+            throw new BadRequestException("NewDishRequest.price cannot be null");
+        }
+
+        if(createDishRequest.getPrice() <= 0){
+            throw new BadRequestException("NewDishRequest.price cannot be negative");
         }
     }
 }
