@@ -1,7 +1,9 @@
 package com.example.td5springboot.service;
 
+import com.example.td5springboot.entity.CreateDishRequest;
 import com.example.td5springboot.entity.Dish;
 import com.example.td5springboot.entity.Ingredient;
+import com.example.td5springboot.exception.BadRequestException;
 import com.example.td5springboot.exception.NotFoundException;
 import com.example.td5springboot.repository.DishRepository;
 import com.example.td5springboot.repository.IngredientRepository;
@@ -46,5 +48,20 @@ public class DishService {
         }
 
         return dishRepository.updateIngredients(dishId, validIngredients);
+    }
+
+    public List<Dish> createDishes (List<CreateDishRequest> createDishRequests) {
+        List<Dish> created = new ArrayList<>();
+
+        for(CreateDishRequest createDishRequest : createDishRequests) {
+            dishValidator.validateCreateDishRequest(createDishRequest);
+
+            if(dishRepository.existsByName(createDishRequest.getName())) {
+                throw new BadRequestException("Dish.name=" + createDishRequest.getName() + " already exists");
+            }
+            Dish saved = dishRepository.save(createDishRequest);
+            created.add(saved);
+        }
+        return created;
     }
 }
