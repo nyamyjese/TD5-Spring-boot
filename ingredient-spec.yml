@@ -101,3 +101,47 @@ paths:
               type: array
               items:
                 $ref: '#/components/schemas/Dish'
+
+/dishes/{id}/ingredients:
+  put:
+    summary: Associe ou dissocie une liste d'ingrédients au plat identifié par id
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+    requestBody:
+      required: true
+      content:
+        text/plain:
+          schema:
+            type: array
+            items:
+              $ref: '#/components/schemas/IngredientRef'
+          example:
+            - id: 1
+            - id: 2
+    responses:
+      '200':
+        description: Liste des ingrédients mise à jour avec succès — retourne le plat mis à jour
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/Dish'
+      '400':
+        description: Corps de la requête absent
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/ErrorMessage'
+            example:
+              message: "Request body is mandatory"
+      '404':
+        description: Plat non trouvé
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/ErrorMessage'
+            example:
+              message: "Dish.id=1 is not found"
