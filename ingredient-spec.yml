@@ -43,3 +43,48 @@ paths:
                 $ref: '#/components/schemas/ErrorMessage'
               example:
                 message: "Ingredient.id=1 is not found"
+
+/ingredients/{id}/stock:
+  get:
+    summary: Retourne la valeur du stock d'un ingrédient à une date et pour une unité données
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+      - name: at
+        in: query
+        required: true
+        schema:
+          type: string
+          example: "2024-01-06 12:00:00"
+      - name: unit
+        in: query
+        required: true
+        schema:
+          type: string
+          enum: [PCS, KG, L]
+    responses:
+      '200':
+        description: Valeur du stock retournée avec succès
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/StockValue'
+      '400':
+        description: Paramètre at ou unit manquant
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/ErrorMessage'
+            example:
+              message: "Either mandatory query parameter `at` or `unit` is not provided."
+      '404':
+        description: Ingrédient non trouvé
+        content:
+          text/plain:
+            schema:
+              $ref: '#/components/schemas/ErrorMessage'
+            example:
+              message: "Ingredient.id=1 is not found"
