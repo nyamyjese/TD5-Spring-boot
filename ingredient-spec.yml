@@ -88,3 +88,16 @@ paths:
               $ref: '#/components/schemas/ErrorMessage'
             example:
               message: "Ingredient.id=1 is not found"
+
+/dishes:
+  get:
+    summary: Retourne la liste de tous les plats avec leurs ingrédients
+    responses:
+      '200':
+        description: Liste des plats retournée avec succès
+        content:
+          text/plain:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Dish'
