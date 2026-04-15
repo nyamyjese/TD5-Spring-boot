@@ -145,3 +145,82 @@ paths:
               $ref: '#/components/schemas/ErrorMessage'
             example:
               message: "Dish.id=1 is not found"
+
+components:
+  schemas:
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Tomate"
+        category:
+          type: string
+          enum: [VEGETABLE, ANIMAL, DAIRY, OTHER]
+          example: "VEGETABLE"
+        price:
+          type: number
+          example: 600.00
+
+    StockValue:
+      type: object
+      properties:
+        quantity:
+          type: number
+          example: 4.80
+        unit:
+          type: string
+          enum: [PCS, KG, L]
+          example: "KG"
+
+    DishIngredient:
+      type: object
+      properties:
+        ingredient:
+          $ref: '#/components/schemas/Ingredient'
+        quantity:
+          type: number
+          example: 0.20
+        unit:
+          type: string
+          enum: [PCS, KG, L]
+          example: "KG"
+
+    Dish:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "Poulet grillé"
+        dishType:
+          type: string
+          enum: [START, MAIN, DESSERT]
+          example: "MAIN"
+        price:
+          type: number
+          nullable: true
+          example: 12000.00
+        dishIngredients:
+          type: array
+          items:
+            $ref: '#/components/schemas/DishIngredient'
+
+    IngredientRef:
+      type: object
+      description: Objet contenant uniquement l'identifiant d'un ingrédient existant
+      properties:
+        id:
+          type: integer
+          example: 1
+
+    ErrorMessage:
+      type: object
+      properties:
+        message:
+          type: string
